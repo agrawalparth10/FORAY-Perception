@@ -8,6 +8,7 @@ while True:
 	ret, frame = cap.read()
 	if ret:
 		cv2.imshow("stream",frame)
+		print(frame.shape)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
 		break
 
