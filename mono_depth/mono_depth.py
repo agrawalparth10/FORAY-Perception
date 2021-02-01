@@ -1,10 +1,11 @@
 import cv2
 
 DEBUG = 1
-
-def focal_cal(d,plength,olength):
-	flength = d * (plength/olength)
-	return flength
+object_length = 0.228
+pixel_length = 300
+distance = 0.61
+i0 = 640
+j0 = 360
 
 def x_hat(olength,ip,i0,pflength):
 	return (olength * (ip - i0)) / pflength
@@ -25,14 +26,12 @@ def measure(d,olength,ip,jp,i0,j0,pflength,plength):
 	distance = (x_cor ** 2 + z_cor ** 2) ** 0.5
 	return distance
 
-object_length = 0.228 
-pixel_length = 300
-distance = 0.61
-focal_length = focal_cal(distance,pixel_length,object_length)
-i0 = 640
-j0 = 360
+if DEBUG:
+	cap = cv2.VideoCapture(0)
+else:
+	cap = cv2.VideoCapture()
+	cap.open("http://192.168.4.1:81/stream")
 
-cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
 while(True):
