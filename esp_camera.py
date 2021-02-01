@@ -1,7 +1,12 @@
 import cv2
 
-cap = cv2.VideoCapture()
-cap.open("http://192.168.4.1:81/stream")
+DEBUG = 1
+
+if DEBUG:
+	cap = cv2.VideoCapture(0)
+else:
+	cap = cv2.VideoCapture()
+	cap.open("http://192.168.4.1:81/stream")
 
 
 while True:
