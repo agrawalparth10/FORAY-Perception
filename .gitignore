@@ -8,3 +8,4 @@ dataset
 .ipynb_checkpoints
 .DS_Store
 .vscode
+svc_classifier/svc.pk

@@ -2,10 +2,10 @@ import cv2
 
 DEBUG = 1
 object_length = 0.228
-pixel_length = 300
-distance = 0.61
-i0 = 640
-j0 = 360
+pixel_length = 500
+distance = 0.51
+i0 = 720 // 2
+j0 = 1280 // 2
 
 def x_hat(olength,ip,i0,pflength):
 	return (olength * (ip - i0)) / pflength
@@ -25,12 +25,16 @@ def measure(d,olength,ip,jp,i0,j0,pflength,plength):
 	z_cor = z_hat(d,plength,pflength)
 	distance = (x_cor ** 2 + z_cor ** 2) ** 0.5
 	return distance
-
+"""
 if DEBUG:
 	cap = cv2.VideoCapture(0)
 else:
 	cap = cv2.VideoCapture()
-	cap.open("http://192.168.4.1:81/stream")
+	cap.open("http://192.168.4.1:81/stream")	
+"""
+
+cap = cv2.VideoCapture()
+cap.open("http://192.168.4.1:81/stream")
 
 face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 
