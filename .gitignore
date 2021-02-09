@@ -9,3 +9,7 @@ dataset
 .DS_Store
 .vscode
 svc_classifier/svc.pk
+nn-tinyml/.DS_Store
+nn-tinyml/camera/.DS_Store
+image_1.txt
+sample.jpeg

@@ -27,6 +27,7 @@
 #include "freertos/task.h"
 #include "app_facenet.h"
 #include "sdkconfig.h"
+#include "image_util.h"
 
 static const char *TAG = "app_process";
 
@@ -59,14 +60,22 @@ void print_array(dl_matrix3du_t *image_matrix)
 	int w = image_matrix -> w;
 	int h = image_matrix -> h;
 	int c = image_matrix -> c;
+	int count = w * h;
+	uint8_t* r = image_matrix -> item;
+	uint8_t* g = r + 1;
+	uint8_t* b = r + 2;
 
-	for (int i = 0; i < w; i++)
+	for (int i = 0; i < count; i++)
 	{
-		for (int j = 0; j < h; j++)
+		int val = ( 19595 * (*r) + 38469 * (*g) + 7472 * (*b)) >> 16;
+		printf("%d ",val);
+		if ((i+1) % w == 0)
 		{
-			printf(" %d ",*((image_matrix->item) + i * w + j));
+			printf(" \n");
 		}
-		printf("\n");
+		r += 3;
+		g += 3;
+		b += 3;
 	}
 	return;
 }
@@ -97,6 +106,7 @@ void task_process (void *arg)
 
         /* 3. Allocate image matrix to store RGB data */
         image_matrix = dl_matrix3du_alloc(1, fb->width, fb->height, 3);
+	printf("Format %d \n",fb->format);
 
         /* 4. Transform image to RGB */
         uint32_t res = fmt2rgb888(fb->buf, fb->len, fb->format, image_matrix->item);
@@ -106,8 +116,8 @@ void task_process (void *arg)
             dl_matrix3du_free(image_matrix);
             continue;
         }
-
-	    printf("Dimensions of the image - Width: - %d , Height - %d, Channel - %d, N - %d, Stride - %d, Data - %d \n", image_matrix->w,image_matrix->h,image_matrix->c,image_matrix->n,image_matrix->stride,*(image_matrix->item)); 
+	
+	printf("Dimensions of the image - Width: - %d , Height - %d, Channel - %d, N - %d, Stride - %d, Data - %d \n", image_matrix->w,image_matrix->h,image_matrix->c,image_matrix->n,image_matrix->stride,*(image_matrix->item)); 
 
         esp_camera_fb_return(fb);
 
